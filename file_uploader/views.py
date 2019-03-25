@@ -1,6 +1,8 @@
 # Create your views here.
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
+from wq.io import load_file
+import pandas as pd
 
 
 def home(request):
@@ -15,8 +17,8 @@ def simple_upload(request):
         fs = FileSystemStorage()
         filename = fs.save('files/'+myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
+        data = pd.read_csv(uploaded_file_url)
+        data_html = data.to_html()
         #acá rendereo a otra pág
-        return render(request, 'simple_upload.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
+        return render(request, 'simple_upload.html', {'uploaded_file_url': uploaded_file_url, 'data_html': data_html})
     return render(request, 'simple_upload.html')
