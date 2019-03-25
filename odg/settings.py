@@ -38,8 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'file_uploader',
-    'grappelli',
-    'filebrowser',
 ]
 
 MIDDLEWARE = [
