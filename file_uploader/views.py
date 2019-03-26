@@ -1,8 +1,11 @@
 # Create your views here.
-from django.core.files.storage import FileSystemStorage
-from django.shortcuts import render
 import os
+
 import pandas as pd
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import redirect, render
+from django.views import generic
+from . import forms, models, Document
 
 
 
@@ -29,3 +32,18 @@ def gallery(request):
     path='static'  # insert the path to your directory
     img_list =os.listdir(path)
     return render(request, 'gallery.html', {'images': img_list})
+
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = forms.DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = forms.DocumentForm()
+    return render(request, 'model_form_upload.html', {
+        'form': form
+    })
+
+class DocumentsListView(generic.ListView):
+    model = Document
