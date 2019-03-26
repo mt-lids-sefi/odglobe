@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Documents List</h1>
+
+    {% if document_list %}
+    <ul>
+
+      {% for doc in document_list %}
+      <li>
+        <a href="{{ doc.document }}">{{ doc.description}}</a> <a>{{ doc.document }}</a>
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no files.</p>
+    {% endif %}
+{% endblock %}

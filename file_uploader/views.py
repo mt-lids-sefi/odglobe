@@ -5,8 +5,9 @@ import pandas as pd
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render
 from django.views import generic
-from . import forms, models, Document
 
+from file_uploader.models import Document
+from . import forms
 
 
 def home(request):
@@ -47,3 +48,4 @@ def model_form_upload(request):
 
 class DocumentsListView(generic.ListView):
     model = Document
+    template_name = 'document_list.html'
