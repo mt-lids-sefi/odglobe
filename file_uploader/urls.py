@@ -6,5 +6,6 @@ urlpatterns = [
     path('su/', views.simple_upload, name='simple_upload'),
     path('mu/', views.model_form_upload, name='model_form_upload'),
     path('gallery/', views.gallery, name='gallery'),
-    path('documents/', views.DocumentsListView.as_view(), name='documents')
+    path('documents/', views.DocumentsListView.as_view(), name='documents'),
+    path('documents/<pk>/', views.DetailView.as_view(), name='detail')
 ]

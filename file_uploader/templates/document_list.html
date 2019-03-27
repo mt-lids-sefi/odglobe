@@ -8,7 +8,7 @@
 
       {% for doc in document_list %}
       <li>
-        <a href="{{ doc.document }}">{{ doc.description}}</a> <a>{{ doc.document }}</a>
+        <a href="{% url 'detail' doc.document_id %}">{{ doc.description}}</a> <a>{{ doc.document }}</a> <a>{{ doc.document_id }}</a>
       </li>
       {% endfor %}
     </ul>

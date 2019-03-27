@@ -46,6 +46,13 @@ def model_form_upload(request):
         'form': form
     })
 
+
+class DetailView(generic.DetailView):
+    model = Document
+    template_name = 'detail.html'
+
+
 class DocumentsListView(generic.ListView):
     model = Document
     template_name = 'document_list.html'
+
