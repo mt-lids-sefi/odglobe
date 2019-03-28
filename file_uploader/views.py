@@ -20,7 +20,7 @@ def simple_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
-        filename = fs.save('static/'+myfile.name, myfile)
+        filename = fs.save('files/'+myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
         data = pd.read_csv(uploaded_file_url)
         data_html = data.to_html()
@@ -53,7 +53,7 @@ def document_detail(request, pk):
     #file = fs.open(document.document)
     #file_url = fs.url(file)
     data = pd.read_csv(document.document)
-    data_html = data.to_html()
+    data_html = data.to_html(classes='mystyle')
     context = {'document_id': document.document_id, 'document_desc': document.description,
                 'data_html': data_html}
     return render(request, 'detail.html', context)
