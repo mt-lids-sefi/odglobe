@@ -3,7 +3,7 @@ import os
 
 import pandas as pd
 from django.core.files.storage import FileSystemStorage
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 
 from file_uploader.models import Document
@@ -45,6 +45,18 @@ def model_form_upload(request):
     return render(request, 'model_form_upload.html', {
         'form': form
     })
+
+def document_detail(request, pk):
+    #en pk viene el id del archivo
+    fs = FileSystemStorage()
+    document = get_object_or_404(Document, document_id=pk)
+    #file = fs.open(document.document)
+    #file_url = fs.url(file)
+    data = pd.read_csv(document.document)
+    data_html = data.to_html()
+    context = {'document_id': document.document_id, 'document_desc': document.description,
+                'data_html': data_html}
+    return render(request, 'detail.html', context)
 
 
 class DetailView(generic.DetailView):

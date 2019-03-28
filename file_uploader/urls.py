@@ -7,5 +7,5 @@ urlpatterns = [
     path('mu/', views.model_form_upload, name='model_form_upload'),
     path('gallery/', views.gallery, name='gallery'),
     path('documents/', views.DocumentsListView.as_view(), name='documents'),
-    path('documents/<pk>/', views.DetailView.as_view(), name='detail')
+    path('documents/<pk>/', views.document_detail, name='detail')
 ]
