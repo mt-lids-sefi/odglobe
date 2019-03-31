@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load leaflet_tags %}
+
+{% block content %}
+
+<h1>pruebo mapas</h1>
+
+<script type="text/javascript">
+    function map_init_basic (map, options) {
+
+        L.marker([50.5, 30.5]).addTo(map);
+
+    }
+</script>
+
+{% leaflet_map "yourmap" callback="window.map_init_basic" %}
+
+{% endblock %}

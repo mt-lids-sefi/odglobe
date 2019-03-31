@@ -58,6 +58,12 @@ def document_detail(request, pk):
                 'data_html': data_html}
     return render(request, 'detail.html', context)
 
+def document_map(request,pk):
+    #asumiendo que document es un geojson
+    document = get_object_or_404(Document, document_id=pk)
+
+    return render(request, 'map.html')
+
 
 class DetailView(generic.DetailView):
     model = Document
