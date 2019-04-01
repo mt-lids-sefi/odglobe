@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Documents List</h1>
+    <h1>Lista de archivos</h1>
 
     {% if document_list %}
     <ul>
 
       {% for doc in document_list %}
       <li>
-        <a href="{% url 'detail' doc.document_id %}">{{ doc.description}}</a> <a>{{ doc.document }}</a> <a>{{ doc.document_id }}</a>
+        <a href="{% url 'detail' doc.document_id %}">Ver datos de {{ doc.description}}</a>
+          <a href="{% url 'map' doc.document_id %}"> <b>Ver Mapa</b> </a>
       </li>
       {% endfor %}
     </ul>

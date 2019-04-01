@@ -2,6 +2,8 @@
 import os
 
 import pandas as pd
+import geopandas as gpd
+import folium
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
@@ -61,8 +63,21 @@ def document_detail(request, pk):
 def document_map(request,pk):
     #asumiendo que document es un geojson
     document = get_object_or_404(Document, document_id=pk)
+    #leo el geojson con geopandas
+    #file = gpd.read_file(document.document)
+    mimapa = folium.Map(location=[-34.641552,-58.479811])
+    #para cargar un geojson:
+    #folium.GeoJson(file).add_to(mimapa)
 
-    return render(request, 'map.html')
+    #para cargar un csv
+    df = pd.read_csv(document.document)
+    for index, row in df.iterrows():
+        folium.Marker([row['latitude'], row['longitude']],
+                      icon=folium.Icon(icon='cloud')
+                      ).add_to(mimapa)
+    m = mimapa._repr_html_()
+    context = { 'map': m , 'name': document.name, 'description': document.description}
+    return render(request, 'map.html', context)
 
 
 class DetailView(generic.DetailView):

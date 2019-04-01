@@ -2,19 +2,14 @@
 
 {% load static %}
 {% load leaflet_tags %}
+{% load geojson_tags %}
 
 {% block content %}
 
-<h1>pruebo mapas</h1>
+<h1>{{ name }}</h1>
+    <h4>{{ description }}</h4>
 
-<script type="text/javascript">
-    function map_init_basic (map, options) {
+    {{ map|safe }}
 
-        L.marker([50.5, 30.5]).addTo(map);
-
-    }
-</script>
-
-{% leaflet_map "yourmap" callback="window.map_init_basic" %}
-
+    {{ document|safe}}
 {% endblock %}
