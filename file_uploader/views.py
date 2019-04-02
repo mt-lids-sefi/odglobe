@@ -2,12 +2,13 @@
 import os
 
 import pandas as pd
-import geopandas as gpd
 import folium
+import numpy as np
+import geopandas as gpd
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
-
+from . import utils
 from file_uploader.models import Document
 from . import forms
 
@@ -50,10 +51,7 @@ def model_form_upload(request):
 
 def document_detail(request, pk):
     #en pk viene el id del archivo
-    fs = FileSystemStorage()
     document = get_object_or_404(Document, document_id=pk)
-    #file = fs.open(document.document)
-    #file_url = fs.url(file)
     data = pd.read_csv(document.document)
     data_html = data.to_html(classes='mystyle')
     context = {'document_id': document.document_id, 'document_desc': document.description,
@@ -61,16 +59,17 @@ def document_detail(request, pk):
     return render(request, 'detail.html', context)
 
 def document_map(request,pk):
-    #asumiendo que document es un geojson
+    mimapa = folium.Map(location=[-34.641552, -58.479811])
     document = get_object_or_404(Document, document_id=pk)
-    #leo el geojson con geopandas
-    #file = gpd.read_file(document.document)
-    mimapa = folium.Map(location=[-34.641552,-58.479811])
-    #para cargar un geojson:
-    #folium.GeoJson(file).add_to(mimapa)
-
-    #para cargar un csv
     df = pd.read_csv(document.document)
+    df['longitude'] = df['longitude'].replace(r'\s+', np.nan, regex=True)
+    df['longitude'] = df['longitude'].replace(r'^$', np.nan, regex=True)
+    df['longitude'] = df['longitude'].fillna(-0.99999)
+    df['longitude'] = pd.to_numeric(df['longitude'])
+    df['latitude'] = df['latitude'].replace(r'\s+', np.nan, regex=True)
+    df['latitude'] = df['latitude'].replace(r'^$', np.nan, regex=True)
+    df['latitude'] = df['latitude'].fillna(-0.99999)
+    df['latitude'] = pd.to_numeric(df['latitude'])
     for index, row in df.iterrows():
         folium.Marker([row['latitude'], row['longitude']],
                       icon=folium.Icon(icon='cloud')
