@@ -2,12 +2,15 @@
 import os
 
 import pandas as pd
-import geopandas as gpd
 import folium
+import numpy as np
+import geopandas as gpd
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
+from folium.plugins import MarkerCluster, FastMarkerCluster
 
+from . import utils
 from file_uploader.models import Document
 from . import forms
 
@@ -50,34 +53,43 @@ def model_form_upload(request):
 
 def document_detail(request, pk):
     #en pk viene el id del archivo
-    fs = FileSystemStorage()
     document = get_object_or_404(Document, document_id=pk)
-    #file = fs.open(document.document)
-    #file_url = fs.url(file)
     data = pd.read_csv(document.document)
     data_html = data.to_html(classes='mystyle')
     context = {'document_id': document.document_id, 'document_desc': document.description,
-                'data_html': data_html}
+                'data_html': data_html, 'route':document.document}
     return render(request, 'detail.html', context)
 
 def document_map(request,pk):
-    #asumiendo que document es un geojson
+    mimapa = folium.Map(location=[-34.641552, -58.479811])
     document = get_object_or_404(Document, document_id=pk)
-    #leo el geojson con geopandas
-    #file = gpd.read_file(document.document)
-    mimapa = folium.Map(location=[-34.641552,-58.479811])
-    #para cargar un geojson:
-    #folium.GeoJson(file).add_to(mimapa)
-
-    #para cargar un csv
     df = pd.read_csv(document.document)
-    for index, row in df.iterrows():
-        folium.Marker([row['latitude'], row['longitude']],
-                      icon=folium.Icon(icon='cloud')
-                      ).add_to(mimapa)
+    df['longitude'] = df['longitude'].replace(r'\s+', np.nan, regex=True)
+    df['longitude'] = df['longitude'].replace(r'^$', np.nan, regex=True)
+    df['longitude'] = df['longitude'].fillna(-0.99999)
+    df['longitude'] = pd.to_numeric(df['longitude'])
+    df['latitude'] = df['latitude'].replace(r'\s+', np.nan, regex=True)
+    df['latitude'] = df['latitude'].replace(r'^$', np.nan, regex=True)
+    df['latitude'] = df['latitude'].fillna(-0.99999)
+    df['latitude'] = pd.to_numeric(df['latitude'])
+    #mc = FastMarkerCluster()
+    #for index, row in df.iterrows():
+    #    mc.add_child(folium.Marker([row['latitude'], row['longitude']],
+    #                  icon=folium.Icon(color='red')
+    #                  ))
+    #mimapa.add_child(mc)
+    FastMarkerCluster(data=list(zip(df['latitude'], df['longitude']))).add_to(mimapa    )
     m = mimapa._repr_html_()
     context = { 'map': m , 'name': document.name, 'description': document.description}
     return render(request, 'map.html', context)
+
+
+
+def document_map_lf(request,pk):
+    document = get_object_or_404(Document, document_id=pk)
+
+    context = {'doc': document}
+    return render(request, 'map_lf.html', context)
 
 
 class DetailView(generic.DetailView):
