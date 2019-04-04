@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+{% load leaflet_tags %}
+
+{% block content %}
+
+<h1>pruebo mapas</h1>
+
+<script type="text/javascript">
+    function map_init_basic (map, options) {
+        //L.map(map).setView([-34.587997, -58.466492], 4);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        id: 'mapbox.streets'
+        }).addTo(map);
+        var markers = L.markerClusterGroup();
+        var file = require({{ doc.document }})
+        for (let index = 0; index < doc[0].length; index++) {
+            const element = doc[0][index];
+            markers.addLayer(L.marker([element.lat, element.lng]));
+        }
+        map.addLayer(markers);
+
+    }
+</script>
+
+{% leaflet_map "yourmap" callback="window.map_init_basic" %}
+
+{% endblock %}

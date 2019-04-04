@@ -8,6 +8,8 @@ import geopandas as gpd
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
+from folium.plugins import MarkerCluster, FastMarkerCluster
+
 from . import utils
 from file_uploader.models import Document
 from . import forms
@@ -55,7 +57,7 @@ def document_detail(request, pk):
     data = pd.read_csv(document.document)
     data_html = data.to_html(classes='mystyle')
     context = {'document_id': document.document_id, 'document_desc': document.description,
-                'data_html': data_html}
+                'data_html': data_html, 'route':document.document}
     return render(request, 'detail.html', context)
 
 def document_map(request,pk):
@@ -70,13 +72,24 @@ def document_map(request,pk):
     df['latitude'] = df['latitude'].replace(r'^$', np.nan, regex=True)
     df['latitude'] = df['latitude'].fillna(-0.99999)
     df['latitude'] = pd.to_numeric(df['latitude'])
-    for index, row in df.iterrows():
-        folium.Marker([row['latitude'], row['longitude']],
-                      icon=folium.Icon(icon='cloud')
-                      ).add_to(mimapa)
+    #mc = FastMarkerCluster()
+    #for index, row in df.iterrows():
+    #    mc.add_child(folium.Marker([row['latitude'], row['longitude']],
+    #                  icon=folium.Icon(color='red')
+    #                  ))
+    #mimapa.add_child(mc)
+    FastMarkerCluster(data=list(zip(df['latitude'], df['longitude']))).add_to(mimapa    )
     m = mimapa._repr_html_()
     context = { 'map': m , 'name': document.name, 'description': document.description}
     return render(request, 'map.html', context)
+
+
+
+def document_map_lf(request,pk):
+    document = get_object_or_404(Document, document_id=pk)
+
+    context = {'doc': document}
+    return render(request, 'map_lf.html', context)
 
 
 class DetailView(generic.DetailView):
