@@ -19,6 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     #Acá apunto a la home de subir archivo
-    path('file_uploader/', include('file_uploader.urls')),
+    path('', include('file_uploader.urls')),
 ]
 
