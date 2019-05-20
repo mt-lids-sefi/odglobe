@@ -15,7 +15,7 @@
         maxZoom: 18,
         id: 'mapbox.streets'
         }).addTo(map);
-        var markers = L.markerClusterGroup();
+        var markers = L.markerClusterGroup({showCoverageOnHover: true, chunkedLoading: true});
         var file = {{ data | safe }};
         var count = Object.keys(file).length;
         console.log(count)
