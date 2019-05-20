@@ -16,11 +16,13 @@
         id: 'mapbox.streets'
         }).addTo(map);
         var markers = L.markerClusterGroup();
-        var file = {{ data }};
-        console.log(file);
-        for (let index = 0; index < file.length; index++) {
+        var file = {{ data | safe }};
+        var count = Object.keys(file).length;
+        console.log(count)
+        for (let index = 0; index < count; index++) {
             const element = file[index];
-            markers.addLayer(L.marker(element.latitude, element.longitude));
+            console.log(element);
+            markers.addLayer(L.marker(new L.LatLng(element.latitude, element.longitude)));
         }
         map.addLayer(markers);
 
