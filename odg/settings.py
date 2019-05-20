@@ -42,6 +42,17 @@ INSTALLED_APPS = [
     'leaflet'
 ]
 
+LEAFLET_CONFIG = {
+    # conf here
+'PLUGINS': {
+    'leaflet.markercluster': {
+        'css': ['https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css'],
+        'js': 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js',
+        'auto-include': True,
+        },
+    }
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
