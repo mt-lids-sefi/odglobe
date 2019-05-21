@@ -8,8 +8,6 @@
 
 <h1>{{ name }}</h1>
     <h4>{{ description }}</h4>
-
+<a href="{% url 'detail' document.document_id %}">Ver datos de {{ document.description}}</a>
     {{ map|safe }}
-
-    {{ document|safe}}
 {% endblock %}

@@ -75,7 +75,7 @@ def document_map(request,pk):
 
     FastMarkerCluster(data=list(zip(df['latitude'], df['longitude']))).add_to(mimapa)
     m = mimapa._repr_html_()
-    context = { 'map': m , 'name': document.name, 'description': document.description}
+    context = { 'map': m , 'name': document.name, 'description': document.description, 'document': document}
     return render(request, 'map.html', context)
 
 
