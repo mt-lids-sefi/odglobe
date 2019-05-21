@@ -80,7 +80,7 @@ def document_map(request,pk):
 
 
 #Enviar el mapa a través de leaflet con js.
-#NOT working
+
 def document_map_lf(request,pk):
     document = get_object_or_404(Document, document_id=pk)
     df = pd.read_csv(document.document)
@@ -92,9 +92,7 @@ def document_map_lf(request,pk):
     df['latitude'] = df['latitude'].replace(r'^$', np.nan, regex=True)
     df['latitude'] = df['latitude'].fillna(-0.99999)
     df['latitude'] = pd.to_numeric(df['latitude'])
-    df =df.to_json(orient='index')
-    #print(df)
-    #data= list(zip(df['latitude'], df['longitude']))
+    df = df.to_json(orient='index')
     context = {'doc': document, 'data': df}
     return render(request, 'map_lf.html', context)
 
