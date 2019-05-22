@@ -80,7 +80,6 @@ def document_map(request,pk):
 
 
 #Enviar el mapa a través de leaflet con js.
-
 def document_map_lf(request,pk):
     document = get_object_or_404(Document, document_id=pk)
     df = pd.read_csv(document.document)

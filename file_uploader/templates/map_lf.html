@@ -23,8 +23,13 @@
         var count = Object.keys(file).length;
         for (let index = 0; index < count; index++) {
             const element = file[index];
-            //markers.addLayer(L.marker(element.latitude, element.longitude));
-            markers.addLayer(L.marker(new L.LatLng(element.latitude, element.longitude)));
+            var marker= new L.LatLng(element.latitude, element.longitude)
+
+            L.marker([element.latitude, element.longitude]).addTo(markers)
+            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+            .openPopup();
+
+            //markers.addLayer(L.marker(marker));
         }
         map.addLayer(markers);
 
