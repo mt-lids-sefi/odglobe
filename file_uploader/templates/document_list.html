@@ -8,7 +8,7 @@
 
       {% for doc in document_list %}
       <li>
-          <a href="{% url 'map' doc.document_id %}"> <b>Ver Mapa de {{ doc.name}}</b>, {{ doc.description }} </a>
+          <a href="{% url 'map_lf' doc.document_id %}"> <b>Ver Mapa de {{ doc.name}}</b>, {{ doc.description }} </a>
       </li>
       {% endfor %}
     </ul>
