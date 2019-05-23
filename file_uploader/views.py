@@ -9,7 +9,6 @@ from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 from folium.plugins import MarkerCluster, FastMarkerCluster
-from django.core.paginator import Paginator
 
 from . import utils
 from file_uploader.models import Document
@@ -17,6 +16,8 @@ from . import forms
 
 
 def home(request):
+    #Acá tengo que subir el archivo
+    #return HttpResponse("Hello, you're home.")
     return render(request, 'home.html')
 
 
@@ -51,14 +52,12 @@ def model_form_upload(request):
     })
 
 def document_detail(request, pk):
-    # {{data_html | safe}}
     #en pk viene el id del archivo
     document = get_object_or_404(Document, document_id=pk)
     data = pd.read_csv(document.document)
-
     data_html = data.to_html(classes='mystyle')
     context = {'document_id': document.document_id, 'document_desc': document.description,
-                'data_html': data_html, 'route': document.document}
+                'data_html': data_html, 'route':document.document}
     return render(request, 'detail.html', context)
 
 def document_map(request,pk):
