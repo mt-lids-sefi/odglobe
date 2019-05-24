@@ -9,6 +9,7 @@ from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 from folium.plugins import MarkerCluster, FastMarkerCluster
+from django.views.generic.edit import UpdateView
 
 from . import utils
 from file_uploader.models import Document
@@ -105,3 +106,7 @@ class DocumentsListView(generic.ListView):
     model = Document
     template_name = 'document_list.html'
 
+class DocumentUpdate(UpdateView):
+    model = Document
+    fields = ['name']
+    template_name = 'document_update_form'
