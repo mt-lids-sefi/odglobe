@@ -14,7 +14,7 @@ from django.views.generic.edit import UpdateView
 from . import utils
 from file_uploader.models import Document
 from . import forms
-
+from django.shortcuts import reverse
 
 def home(request):
     #Acá tengo que subir el archivo
@@ -106,7 +106,10 @@ class DocumentsListView(generic.ListView):
     model = Document
     template_name = 'document_list.html'
 
-class DocumentUpdate(UpdateView):
+class DocumentUpdateView(UpdateView):
     model = Document
-    fields = ['name']
-    template_name = 'document_update_form'
+    template_name = 'document_update_form.html'
+    context_object_name = 'document'
+    fields = ('name', 'description')
+    def get_success_url(self):
+        return reverse('documents')
