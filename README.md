@@ -12,14 +12,25 @@ Los archivos que recibe la aplicación deben tener formato CSV con las columnas 
 
 Las coordenadas deben tener el formato 土##,######, cuidando que no sea un string. 
 
+### Requerimientos
+ 
+* Python  3.6
+* Virtualenv  16.4
 
-### Para ejecutar:
+### Preparar el entorno
 
+`virtualenv -p $(which python3) pyenv`
+
+`source pyenv/bin/activate`
+
+`pip install -r requirements.txt`
 
 `pip install -r requirements.txt`
 
 `python manage.py makemigrations`
 
 `python manage.py migrate`
+
+### Para ejecutar:
 
 `python manage.py runserver`
