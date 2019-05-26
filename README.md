@@ -14,8 +14,8 @@ Las coordenadas deben tener el formato 土##,######, cuidando que no sea un stri
 
 ### Requerimientos
  
-* Python  3.6
-* Virtualenv  16.4
+* Python > 3.6
+* Virtualenv > 16.4
 
 ### Preparar el entorno
 
