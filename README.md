@@ -16,14 +16,13 @@ Las coordenadas deben tener el formato 土##,######, cuidando que no sea un stri
  
 * Python > 3.6
 * Virtualenv > 16.4
+* Pip > 19
 
 ### Preparar el entorno
 
 `virtualenv -p $(which python3) pyenv`
 
 `source pyenv/bin/activate`
-
-`pip install -r requirements.txt`
 
 `pip install -r requirements.txt`
 
