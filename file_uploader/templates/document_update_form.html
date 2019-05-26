@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="card">
   <div class="card-header">
-      <h5 class="card-title">Document Update #{{document.document_id}}</h5>
+      <h5 class="card-title">Editar documento #{{document.document_id}}</h5>
   </div>
   <div class="card-body">
       <form method="post">
           {% csrf_token %}
-          {{form.as_p}}
+          {{form | crispy}}
           <button type="submit" class="btn btn-success">Update</button>
       </form>
   </div>

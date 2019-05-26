@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'file_uploader',
     'djgeojson',
-    'leaflet'
+    'leaflet',
+    'crispy_forms'
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LEAFLET_CONFIG = {
     # conf here
