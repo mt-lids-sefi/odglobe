@@ -44,8 +44,9 @@ def model_form_upload(request):
     if request.method == 'POST':
         form = forms.DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('home')
+            doc =form.save()
+            #Paso a otra pantalla para seleccionar las columnas
+            return redirect('document_update_cols', pk=doc.document_id)
     else:
         form = forms.DocumentForm()
     return render(request, 'model_form_upload.html', {
@@ -111,5 +112,14 @@ class DocumentUpdateView(UpdateView):
     template_name = 'document_update_form.html'
     context_object_name = 'document'
     fields = ('name', 'description')
+    def get_success_url(self):
+        return reverse('documents')
+
+
+class DocumentUpdateCols(UpdateView):
+    model = Document
+    template_name = 'document_update_cols.html'
+    context_object_name = 'document'
+    fields = ('lat_col', 'lon_col')
     def get_success_url(self):
         return reverse('documents')
