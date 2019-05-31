@@ -22,18 +22,6 @@ def home(request):
     return render(request, 'home.html')
 
 
-def simple_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save('files/'+myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        data = pd.read_csv(uploaded_file_url)
-        data_html = data.to_html()
-        #acá rendereo a otra pág
-        return render(request, 'simple_upload.html', {'uploaded_file_url': uploaded_file_url, 'data_html': data_html})
-    return render(request, 'simple_upload.html')
-
 
 def gallery(request):
     path='static'  # insert the path to your directory
@@ -46,12 +34,11 @@ def model_form_upload(request):
         if form.is_valid():
             doc =form.save()
             #Paso a otra pantalla para seleccionar las columnas
-            return redirect('document_update_cols', pk=doc.document_id)
+            #return redirect('document_update_cols', pk=doc.document_id)
+            return redirect('home')
     else:
         form = forms.DocumentForm()
-    return render(request, 'model_form_upload.html', {
-        'form': form
-    })
+    return render(request, 'model_form_upload.html', {'form': form})
 
 def document_detail(request, pk):
     #en pk viene el id del archivo
@@ -111,15 +98,29 @@ class DocumentUpdateView(UpdateView):
     model = Document
     template_name = 'document_update_form.html'
     context_object_name = 'document'
-    fields = ('name', 'description')
+    fields = ('name', 'description', 'lat_col', 'lon_col')
     def get_success_url(self):
         return reverse('documents')
 
+#para seleccionar las cols lat y lon de los archivos
+#deprecated
+# class DocumentUpdateCols(UpdateView):
+#     model = Document
+#     template_name = 'document_update_cols.html'
+#     context_object_name = 'document'
+#     fields = ('lat_col', 'lon_col')
+#     def get_success_url(self):
+#         return reverse('documents')
 
-class DocumentUpdateCols(UpdateView):
-    model = Document
-    template_name = 'document_update_cols.html'
-    context_object_name = 'document'
-    fields = ('lat_col', 'lon_col')
-    def get_success_url(self):
-        return reverse('documents')
+
+# def simple_upload(request):
+#     if request.method == 'POST' and request.FILES['myfile']:
+#         myfile = request.FILES['myfile']
+#         fs = FileSystemStorage()
+#         filename = fs.save('files/'+myfile.name, myfile)
+#         uploaded_file_url = fs.url(filename)
+#         data = pd.read_csv(uploaded_file_url)
+#         data_html = data.to_html()
+#         #acá rendereo a otra pág
+#         return render(request, 'simple_upload.html', {'uploaded_file_url': uploaded_file_url, 'data_html': data_html})
+#     return render(request, 'simple_upload.html')
