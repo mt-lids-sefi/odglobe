@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'file_uploader',
     'djgeojson',
     'leaflet',
-    'crispy_forms'
+    'crispy_forms',
+    'django_tables2'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

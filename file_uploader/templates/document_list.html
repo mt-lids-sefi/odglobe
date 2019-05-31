@@ -4,14 +4,33 @@
     <h1>Lista de archivos</h1>
 
     {% if document_list %}
-    <ul>
+    
 
-      {% for doc in document_list %}
-      <li>
-          <a href="{% url 'map_lf' doc.document_id %}"> <b>Ver Mapa de {{ doc.name}}</b>, {{ doc.description }} </a> <a href="{% url 'document_update_form' doc.document_id %}">Editar</a>
-      </li>
-      {% endfor %}
-    </ul>
+     <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Ver Mapa</th>
+        <th>Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for doc in document_list %}
+      <tr>
+        <td>{{ doc.name}}</td>
+        <td> {{ doc.description }} </td>
+        <td><a href="{% url 'map_lf' doc.document_id %}"> <b>Mapa</b></a></td>
+        <td><a href="{% url 'document_update_form' doc.document_id %}">Editar</a></td>
+      </tr>
+    {% endfor %}   
+    </tbody>
+  </table>
+
+
+
+
+
     {% else %}
       <p>No hay archivos cargados.</p>
     {% endif %}
