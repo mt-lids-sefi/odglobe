@@ -1,34 +1,25 @@
 # Create your views here.
-import os
 
-import pandas as pd
-import folium
 import numpy as np
-import geopandas as gpd
-from django.core.files.storage import FileSystemStorage
+import pandas as pd
 from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import reverse
 from django.views import generic
-from folium.plugins import MarkerCluster, FastMarkerCluster
 from django.views.generic.edit import UpdateView
 
-from . import utils
 from file_uploader.models import Document
 from . import forms
-from django.shortcuts import reverse
+
 
 def home(request):
-    #Acá tengo que subir el archivo
-    #return HttpResponse("Hello, you're home.")
     return render(request, 'home.html')
-
-
 
 def model_form_upload(request):
     if request.method == 'POST':
         form = forms.DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            #Paso a otra pantalla para seleccionar las columnas
+            #Paso a otra pantalla para seleccionar las columnas *not working*
             #return redirect('document_update_cols', pk=doc.document_id)
             return redirect('home')
     else:
@@ -37,15 +28,12 @@ def model_form_upload(request):
 
 #Ver el detalle del doc
 def document_detail(request, pk):
-    #en pk viene el id del archivo
     document = get_object_or_404(Document, document_id=pk)
     data = pd.read_csv(document.document)
     data_html = data.to_html(classes='mystyle')
     context = {'document_id': document.document_id, 'document_desc': document.description,
                 'data_html': data_html, 'route':document.document}
     return render(request, 'detail.html', context)
-
-
 
 
 #Enviar el mapa a través de leaflet con js.
