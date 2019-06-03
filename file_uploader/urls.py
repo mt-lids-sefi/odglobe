@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('mu/', views.model_form_upload, name='model_form_upload'),
+    path('add/', views.DocumentCreateView.as_view(), name='document_add'),
     path('documents/', views.DocumentsListView.as_view(), name='documents'),
     path('documents/<pk>/', views.document_detail, name='detail'),
     #path('documents/map/<pk>', views.document_map, name='map'),

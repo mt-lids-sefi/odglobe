@@ -5,7 +5,7 @@ import pandas as pd
 from django.shortcuts import redirect, render, get_object_or_404
 from django.shortcuts import reverse
 from django.views import generic
-from django.views.generic.edit import UpdateView
+from django.views.generic import UpdateView, CreateView
 
 from file_uploader.models import Document
 from . import forms
@@ -67,6 +67,13 @@ class DocumentUpdateView(UpdateView):
     template_name = 'document_update_form.html'
     context_object_name = 'document'
     fields = ('name', 'description', 'lat_col', 'lon_col')
+    def get_success_url(self):
+        return reverse('documents')
+
+
+class DocumentCreateView(CreateView):
+    model = Document
+    fields = ('name', 'description', 'document', 'lat_col', 'lon_col')
     def get_success_url(self):
         return reverse('documents')
 
