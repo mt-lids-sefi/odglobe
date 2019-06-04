@@ -10,5 +10,6 @@ urlpatterns = [
     path('documents/map_lf/<pk>', views.document_map_lf, name='map_lf'),
     path('document/<int:pk>/update', views.DocumentUpdateView.as_view(),name='document_update_form'),
     #path('document/<int:pk>/cols', views.DocumentUpdateCols.as_view(),name='document_update_cols')
-    path('document/<int:pk>/cols', views.cols_form_upload ,name='document_update_cols')
+    path('document/<int:pk>/cols', views.cols_form_upload ,name='document_update_cols'),
+    path('ajax/load-cities/', views.load_cols, name='ajax_load_cols'),  # <-- this one here
 ]

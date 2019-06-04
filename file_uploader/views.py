@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.shortcuts import reverse
 from django.views import generic
 from django.views.generic.edit import UpdateView
+import csv
 
 from file_uploader.models import Document
 from . import forms
@@ -72,17 +73,6 @@ class DocumentUpdateView(UpdateView):
         return reverse('documents')
 
 
-#para seleccionar las cols lat y lon de los archivos
-class DocumentUpdateCols(UpdateView):
-     model = Document
-     form= forms.DocumentFormCols
-     template_name = 'document_update_cols.html'
-     context_object_name = 'document'
-     fields = ('lat_col', 'lon_col')
-
-     def get_success_url(self):
-         return reverse('documents')
-
 
 
 def cols_form_upload(request, pk):
@@ -101,7 +91,30 @@ def cols_form_upload(request, pk):
     return render(request, 'document_update_cols.html', {'form': form, 'document': document})
 
 
+def load_cols(request):
+    doc_id = request.GET.get('doc_id')
+    document = get_object_or_404(Document, document_id=doc_id)
+
+    with open(document.document, "rb") as f:
+        reader = csv.reader(f)
+        i = reader.next()
+    return render(request, 'hr/cols_dropdown_list_options.html', {'cols': i})
+
 #deprecated
+
+
+# #para seleccionar las cols lat y lon de los archivos
+# class DocumentUpdateCols(UpdateView):
+#      model = Document
+#      form= forms.DocumentFormCols
+#      template_name = 'document_update_cols.html'
+#      context_object_name = 'document'
+#      fields = ('lat_col', 'lon_col')
+#
+#      def get_success_url(self):
+#          return reverse('documents')
+#
+
 # def simple_upload(request):
 #     if request.method == 'POST' and request.FILES['myfile']:
 #         myfile = request.FILES['myfile']
