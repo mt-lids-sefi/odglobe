@@ -64,6 +64,7 @@ class DocumentsListView(generic.ListView):
 
 class DocumentUpdateView(UpdateView):
     model = Document
+    form= forms.DocumentForm
     template_name = 'document_update_form.html'
     context_object_name = 'document'
     fields = ('name', 'description', 'lat_col', 'lon_col')
@@ -74,12 +75,30 @@ class DocumentUpdateView(UpdateView):
 #para seleccionar las cols lat y lon de los archivos
 class DocumentUpdateCols(UpdateView):
      model = Document
+     form= forms.DocumentFormCols
      template_name = 'document_update_cols.html'
      context_object_name = 'document'
      fields = ('lat_col', 'lon_col')
+
      def get_success_url(self):
          return reverse('documents')
 
+
+
+def cols_form_upload(request, pk):
+    document = get_object_or_404(Document, document_id=pk)
+    if request.method == 'POST':
+        
+        form = forms.DocumentFormCols(request.POST, request.FILES)
+        form.Meta.model = document
+        if form.is_valid():
+            doc = form.save()
+            #Paso a otra pantalla para seleccionar las columnas *not working*
+            #return redirect('document_update_cols', pk=doc.document_id)
+            return redirect('home')
+    else:
+        form = forms.DocumentFormCols()
+    return render(request, 'document_update_cols.html', {'form': form, 'document': document})
 
 
 #deprecated

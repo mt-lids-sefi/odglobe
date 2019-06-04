@@ -12,6 +12,23 @@ class DocumentForm(forms.ModelForm):
             'description': Textarea(attrs={'class': '???', 'rows': 5}),
         }
 
+
+
+class DocumentFormCols(forms.Form):
+    class Meta:
+        model = models.Document
+    
+    lat_col = forms.ChoiceField(choices=Meta.model.get_cols(Meta.model))
+    lon_col = forms.ChoiceField(choices=Meta.model.get_cols(Meta.model))
+    
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        #self.fields['lat_col'].queryset = self.Meta.model.get_cols(self.Meta.model)
+        #self.fields['lon_col'].queryset = self.Meta.model.get_cols(self.Meta.model)
+        
+
     #Era para completar un dropdown con las columnas. *not working*
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)

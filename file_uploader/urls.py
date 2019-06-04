@@ -9,5 +9,6 @@ urlpatterns = [
     #path('documents/map/<pk>', views.document_map, name='map'),
     path('documents/map_lf/<pk>', views.document_map_lf, name='map_lf'),
     path('document/<int:pk>/update', views.DocumentUpdateView.as_view(),name='document_update_form'),
-    path('document/<int:pk>/cols', views.DocumentUpdateCols.as_view(),name='document_update_cols')
+    #path('document/<int:pk>/cols', views.DocumentUpdateCols.as_view(),name='document_update_cols')
+    path('document/<int:pk>/cols', views.cols_form_upload ,name='document_update_cols')
 ]
