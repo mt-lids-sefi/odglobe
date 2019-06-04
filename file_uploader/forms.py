@@ -7,7 +7,7 @@ import pandas as pd
 class DocumentForm(forms.ModelForm):
     class Meta:
         model = models.Document
-        fields = ('name','description', 'document', 'lat_col', 'lon_col')
+        fields = ('name','description', 'document')
         widgets = {
             'description': Textarea(attrs={'class': '???', 'rows': 5}),
         }

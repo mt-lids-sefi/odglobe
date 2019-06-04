@@ -18,10 +18,10 @@ def model_form_upload(request):
     if request.method == 'POST':
         form = forms.DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            doc = form.save()
             #Paso a otra pantalla para seleccionar las columnas *not working*
-            #return redirect('document_update_cols', pk=doc.document_id)
-            return redirect('home')
+            return redirect('document_update_cols', pk=doc.document_id)
+            #return redirect('home')
     else:
         form = forms.DocumentForm()
     return render(request, 'model_form_upload.html', {'form': form})
@@ -70,17 +70,19 @@ class DocumentUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('documents')
 
+
 #para seleccionar las cols lat y lon de los archivos
+class DocumentUpdateCols(UpdateView):
+     model = Document
+     template_name = 'document_update_cols.html'
+     context_object_name = 'document'
+     fields = ('lat_col', 'lon_col')
+     def get_success_url(self):
+         return reverse('documents')
+
+
+
 #deprecated
-# class DocumentUpdateCols(UpdateView):
-#     model = Document
-#     template_name = 'document_update_cols.html'
-#     context_object_name = 'document'
-#     fields = ('lat_col', 'lon_col')
-#     def get_success_url(self):
-#         return reverse('documents')
-
-
 # def simple_upload(request):
 #     if request.method == 'POST' and request.FILES['myfile']:
 #         myfile = request.FILES['myfile']
