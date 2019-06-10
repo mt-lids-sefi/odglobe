@@ -33,7 +33,7 @@ def document_detail(request, pk):
     data_html = data.to_html(classes='mystyle')
     context = {'document_id': document.document_id, 'document_desc': document.description,
                 'data_html': data_html, 'route':document.document}
-    return render(request, 'detail.html', context)
+        return render(request, 'detail.html', context)
 
 
 #Enviar el mapa a través de leaflet con js.
